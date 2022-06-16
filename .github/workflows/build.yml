@@ -23,66 +23,12 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Run tests
         run: mvn -B test
-#  sonar:
-#    needs: tests
-#    name: Sonar Cloud Analysis
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v1
-#      - name: Setup JDK
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: '11'
-#      - name: Cache Sonar Cloud Packages
-#        uses: actions/cache@v1
-#        with:
-#          path: ~/.sonar/cache
-#          key: ${{ runner.os }}-sonar
-#          restore-keys: ${{ runner.os }}-sonar
-#      - name: Cache Maven Packages
-#        uses: actions/cache@v1
-#        with:
-#          path: ~/.m2
-#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-#          restore-keys: ${{ runner.os }}-m2
-#      - name: Build and analyze
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        run: mvn -B verify sonar:sonar -Dsonar.projectKey=bhimsur_spring-boot-boilerplate -Dsonar.organization=bhimsur -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
-#  build:
-#    needs: tests
-#    name: Build Java
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v1
-#      - name: Setup JDK
-#        uses: actions/setup-java@v1
-#        with:
-#          java-version: '11'
-#      - name: Cache Maven Packages
-#        uses: actions/cache@v1
-#        with:
-#          path: ~/.m2
-#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-#          restore-keys: ${{ runner.os }}-m2
-#      - name: Build with Maven
-#        run: mvn -B package -DskipTests --file pom.xml
-#      - name: Upload Jar
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: artifact
-#          path: target/*.jar
   deploy:
     needs: tests
     name: Deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-#      - name: Download Jar
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: artifact
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
@@ -90,4 +36,3 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
           buildpack: https://github.com/heroku/heroku-buildpack-jvm-common.git
-#          procfile: "web: java -jar artifact"
