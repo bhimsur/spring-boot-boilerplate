@@ -23,30 +23,30 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Run tests
         run: mvn -B test
-  sonar:
-    needs: tests
-    name: Sonar Cloud Analysis
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Setup JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-      - name: Cache Sonar Cloud Packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Maven Packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=bhimsur_spring-boot-boilerplate -Dsonar.organization=bhimsur -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+#  sonar:
+#    needs: tests
+#    name: Sonar Cloud Analysis
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v1
+#      - name: Setup JDK
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: '11'
+#      - name: Cache Sonar Cloud Packages
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.sonar/cache
+#          key: ${{ runner.os }}-sonar
+#          restore-keys: ${{ runner.os }}-sonar
+#      - name: Cache Maven Packages
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: ${{ runner.os }}-m2
+#      - name: Build and analyze
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#        run: mvn -B verify sonar:sonar -Dsonar.projectKey=bhimsur_spring-boot-boilerplate -Dsonar.organization=bhimsur -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
